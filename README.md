@@ -1,4 +1,4 @@
-# png2dat
+# png2pic
 
 Converts paletted PNG images to binary tileset format. Extracts tiles with configurable dimensions and spacing.
 
@@ -15,13 +15,13 @@ Converts paletted PNG images to binary tileset format. Extracts tiles with confi
 ### Command Line
 
 ```bash
-png2dat [options]
+png2pic [options]
 ```
 
 ### Options
 
 - `-src <path>` - Path to the PNG image to convert (default: `tileset.png`)
-- `-dst <path>` - Path to the output .dat file (default: `tileset.dat`)
+- `-dst <path>` - Path to the output .pic file (default: `tileset.pic`)
 - `-tile <format>` - Tile size in pixels (default: `16x16`)
 - `-spacing <pixels>` - Spacing between tiles in pixels (default: `0`)
 - `-debug` - Enable debug mode to show tile extraction details
@@ -30,17 +30,17 @@ png2dat [options]
 
 Convert a 16x16 tileset with no spacing:
 ```bash
-png2dat -src mytiles.png -dst output.dat
+png2pic -src mytiles.png -dst output.pic
 ```
 
 Convert with 8x8 tiles and 1px spacing:
 ```bash
-png2dat -src tileset.png -dst tiles.dat -tile 8x8 -spacing 1
+png2pic -src tileset.png -dst tiles.pic -tile 8x8 -spacing 1
 ```
 
 Debug mode to inspect tile extraction:
 ```bash
-png2dat -src tileset.png -debug
+png2pic -src tileset.png -debug
 ```
 
 ## Input Requirements
@@ -51,7 +51,7 @@ png2dat -src tileset.png -debug
 
 ## Output Format
 
-The output `.dat` file contains a binary header followed by tile data:
+The output `.pic` file contains a binary header followed by tile data:
 
 **Header (4 bytes):**
 1. Tile width (uint8)
@@ -68,22 +68,22 @@ The output `.dat` file contains a binary header followed by tile data:
 ### Using Go
 
 ```bash
-go install github.com/laghoule/png2dat@latest
+go install github.com/laghoule/png2pic@latest
 ```
 
 ### Using Docker
 
 ```bash
-docker pull ghcr.io/laghoule/png2dat:latest
-docker run -v $(pwd):/data ghcr.io/laghoule/png2dat -src /data/tileset.png -dst /data/output.dat
+docker pull ghcr.io/laghoule/png2pic:latest
+docker run -v $(pwd):/data ghcr.io/laghoule/png2pic -src /data/tileset.png -dst /data/output.pic
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/laghoule/png2dat.git
-cd png2dat
-go build -o png2dat main.go
+git clone https://github.com/laghoule/png2pic.git
+cd png2pic
+go build -o png2pic main.go
 ```
 
 ## Use Cases

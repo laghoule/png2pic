@@ -4,7 +4,6 @@ on:
     types: [created]
 
 jobs:
-
   releases-matrix:
     name: Release Go Binary
     runs-on: ubuntu-latest
@@ -18,7 +17,7 @@ jobs:
         run: echo VERSION=$(echo ${GITHUB_REF} | rev | cut -d'/' -f 1 | rev ) >> ${GITHUB_ENV}
       - uses: wangyoucao577/go-release-action@v1.55
         with:
-          github_token: ${{ secrets.PNG2DAT_TOKEN }}
+          github_token: ${{ secrets.PNG2PIC_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           goversion: "1.25.5"
@@ -40,9 +39,9 @@ jobs:
           VERSION: ${{ env.VERSION }}
           GIT_COMMIT: ${{ github.sha }}
         with:
-          name: laghoule/png2dat
+          name: laghoule/png2pic
           username: ${{ github.actor }}
-          password: ${{ secrets.png2dat_TOKEN }}
+          password: ${{ secrets.png2pic_TOKEN }}
           buildargs: VERSION, GIT_COMMIT
           registry: ghcr.io
           tags: "latest,${{ env.VERSION }}"
@@ -54,7 +53,7 @@ jobs:
           GIT_COMMIT: ${{ github.sha }}
           GIT_REF: ${{ github.ref }}
         with:
-          name: laghoule/png2dat
+          name: laghoule/png2pic
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           buildargs: VERSION, GIT_COMMIT

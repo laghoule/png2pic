@@ -20,11 +20,11 @@ func main() {
 	tileFormat := flag.String("tile", "16x16", "Tile size in pixels")
 	tileSpacing := flag.Uint("spacing", 0, "Spacing between tiles in pixels")
 	srcName := flag.String("src", "tileset.png", "Path to the PNG image to convert")
-	dstName := flag.String("dst", "tileset.dat", "Path to the output .dat file")
+	dstName := flag.String("dst", "tileset.pic", "Path to the output .pic file")
 	debug := flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
-	fmt.Printf("png2dat version: %s, git commit: %s\n", version, gitCommit)
+	fmt.Printf("png2pic version: %s, git commit: %s\n", version, gitCommit)
 
 	tileWidth, tileHeight, err := extractTileFormat(*tileFormat)
 	if err != nil {
@@ -41,7 +41,7 @@ func main() {
 
 	datFile, err := os.Create(*dstName)
 	if err != nil {
-		msg := fmt.Errorf("failed to create .dat file: %w", err)
+		msg := fmt.Errorf("failed to create .pic file: %w", err)
 		exitWithError(msg.Error())
 	}
 	defer datFile.Close()
