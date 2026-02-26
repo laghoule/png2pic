@@ -74,6 +74,7 @@ func main() {
 	}
 
 	// Write header to dat file
+	// TODO: create a picHeader struct
 	binary.Write(datFile, binary.LittleEndian, uint8(tileWidth))
 	binary.Write(datFile, binary.LittleEndian, uint8(tileHeight))
 	binary.Write(datFile, binary.LittleEndian, tileWidth*tileHeight)
