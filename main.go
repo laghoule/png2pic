@@ -73,12 +73,12 @@ func main() {
 		fmt.Printf("Number of tiles: %d\n", tilesByColumn*tilesByRow)
 	}
 
-	// Write header to dat file
+	// Write header to pic file
 	// TODO: create a picHeader struct
-	binary.Write(datFile, binary.LittleEndian, tileWidth)                       // Tile width
-	binary.Write(datFile, binary.LittleEndian, tileHeight)                      // Tile height
-	binary.Write(datFile, binary.LittleEndian, imgWidth*imgHeight)              // Number of pixels in the image
-	binary.Write(datFile, binary.LittleEndian, uint8(tilesByColumn+tilesByRow)) // Number of tiles
+	binary.Write(datFile, binary.LittleEndian, tileWidth)                       // Tile width : 1 byte
+	binary.Write(datFile, binary.LittleEndian, tileHeight)                      // Tile height : 1 byte
+	binary.Write(datFile, binary.LittleEndian, 2*imgHeight)                     // Number of pixels in the image : 2 bytes
+	binary.Write(datFile, binary.LittleEndian, uint8(tilesByColumn+tilesByRow)) // Number of tiles in the image : 1 byte
 
 	for row := range tilesByRow {
 		for col := range tilesByColumn {
