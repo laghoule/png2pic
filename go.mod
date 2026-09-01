@@ -1,3 +1,3 @@
 module github.com/laghoule/png2pic
 
-go 1.25.6
+go 1.27.0

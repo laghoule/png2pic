@@ -21,6 +21,7 @@ func main() {
 	tileSpacing := flag.Uint("spacing", 0, "Spacing between tiles in pixels")
 	srcName := flag.String("src", "tileset.png", "Path to the PNG image to convert")
 	dstName := flag.String("dst", "tileset.pic", "Path to the output .pic file")
+	genHeaders := flag.Bool("headers", false, "Generate file headers in .pic file")
 	debug := flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
@@ -75,10 +76,12 @@ func main() {
 
 	// Write header to pic file
 	// TODO: create a picHeader struct
-	binary.Write(datFile, binary.LittleEndian, tileWidth)                       // Tile width : 1 byte
-	binary.Write(datFile, binary.LittleEndian, tileHeight)                      // Tile height : 1 byte
-	binary.Write(datFile, binary.LittleEndian, 2*imgHeight)                     // Number of pixels in the image : 2 bytes
-	binary.Write(datFile, binary.LittleEndian, uint8(tilesByColumn+tilesByRow)) // Number of tiles in the image : 1 byte
+	if *genHeaders {
+    	binary.Write(datFile, binary.LittleEndian, tileWidth)                       // Tile width : 1 byte
+    	binary.Write(datFile, binary.LittleEndian, tileHeight)                      // Tile height : 1 byte
+    	binary.Write(datFile, binary.LittleEndian, 2*imgHeight)                     // Number of pixels in the image : 2 bytes
+    	binary.Write(datFile, binary.LittleEndian, uint8(tilesByColumn+tilesByRow)) // Number of tiles in the image : 1 byte
+	}
 
 	for row := range tilesByRow {
 		for col := range tilesByColumn {
