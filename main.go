@@ -40,13 +40,6 @@ func main() {
 	}
 	defer pngFile.Close()
 
-	datFile, err := os.Create(*dstName)
-	if err != nil {
-		msg := fmt.Errorf("failed to create .pic file: %w", err)
-		exitWithError(msg.Error())
-	}
-	defer datFile.Close()
-
 	img, err := png.Decode(pngFile)
 	if err != nil {
 		msg := fmt.Errorf("failed to decode PNG image: %w", err)
@@ -59,6 +52,13 @@ func main() {
 		exitWithError("Image is not in indexed mode. Please use a PNG image with a 256-color palette.")
 	}
 
+	datFile, err := os.Create(*dstName)
+	if err != nil {
+		msg := fmt.Errorf("failed to create .pic file: %w", err)
+		exitWithError(msg.Error())
+	}
+	defer datFile.Close()
+	
 	bounds := img.Bounds()
 	imgWidth, imgHeight := bounds.Dx(), bounds.Dy()
 
