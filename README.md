@@ -7,7 +7,7 @@ Converts paletted PNG images to binary tileset format. Extracts tiles with confi
 - Converts 256-color indexed PNG images to binary tile data format
 - Configurable tile dimensions (e.g., 8x8, 16x16, 32x32)
 - Support for tile spacing/padding
-- Outputs compact binary format with header
+- Outputs compact binary tile data, with an optional header
 - Debug mode for tile inspection
 
 ## Usage
@@ -24,6 +24,7 @@ png2pic [options]
 - `-dst <path>` - Path to the output .pic file (default: `tileset.pic`)
 - `-tile <format>` - Tile size in pixels (default: `16x16`)
 - `-spacing <pixels>` - Spacing between tiles in pixels (default: `0`)
+- `-headers` - Generate file headers in the .pic file (default: `false`)
 - `-debug` - Enable debug mode to show tile extraction details
 
 ### Examples
@@ -43,6 +44,11 @@ Debug mode to inspect tile extraction:
 png2pic -src tileset.png -debug
 ```
 
+Include a header in the generated .pic file:
+```bash
+png2pic -src tileset.png -headers
+```
+
 ## Input Requirements
 
 - Image must be a PNG file in indexed color mode (paletted)
@@ -51,12 +57,12 @@ png2pic -src tileset.png -debug
 
 ## Output Format
 
-The output `.pic` file contains a binary header followed by tile data:
+By default, the output `.pic` file contains only the raw tile data. Pass `-headers` to prepend a binary header to the file:
 
-**Header (4 bytes):**
+**Header (5 bytes, only written when `-headers` is set):**
 1. Tile width (uint8)
 2. Tile height (uint8)
-3. Bytes per tile (uint16, little-endian)
+3. Number of pixels in the image (2 bytes, little-endian)
 4. Total tiles count (uint8)
 
 **Data:**
