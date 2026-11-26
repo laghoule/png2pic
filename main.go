@@ -17,17 +17,16 @@ var (
 )
 
 func main() {
-	tileFormat := flag.String("tile", "16x16", "Tile size in pixels")
+	tileSize := flag.String("tileSize", "16x16", "Tile size in pixels")
 	tileSpacing := flag.Uint("spacing", 0, "Spacing between tiles in pixels")
 	srcName := flag.String("src", "tileset.png", "Path to the PNG image to convert")
 	dstName := flag.String("dst", "tileset.pic", "Path to the output .pic file")
-	genHeaders := flag.Bool("headers", false, "Generate file headers in .pic file")
 	debug := flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
 	fmt.Printf("png2pic version: %s, git commit: %s\n", version, gitCommit)
 
-	tileWidth, tileHeight, err := extractTileFormat(*tileFormat)
+	tileWidth, tileHeight, err := extractTileFormat(*tileSize)
 	if err != nil {
 		msg := fmt.Errorf("failed to extract tile format: %w", err)
 		exitWithError(msg.Error())
@@ -46,7 +45,6 @@ func main() {
 		exitWithError(msg.Error())
 	}
 
-	// g=Gt the indexed image
 	pImg, indexed := img.(*image.Paletted)
 	if !indexed {
 		exitWithError("Image is not in indexed mode. Please use a PNG image with a 256-color palette.")
@@ -58,7 +56,7 @@ func main() {
 		exitWithError(msg.Error())
 	}
 	defer datFile.Close()
-	
+
 	bounds := img.Bounds()
 	imgWidth, imgHeight := bounds.Dx(), bounds.Dy()
 
@@ -72,15 +70,6 @@ func main() {
 		fmt.Printf("Tiles by column: %d\n", tilesByColumn)
 		fmt.Printf("Tiles by row: %d\n", tilesByRow)
 		fmt.Printf("Number of tiles: %d\n", tilesByColumn*tilesByRow)
-	}
-
-	// Write header to pic file
-	// TODO: create a picHeader struct
-	if *genHeaders {
-    	binary.Write(datFile, binary.LittleEndian, tileWidth)                       // Tile width : 1 byte
-    	binary.Write(datFile, binary.LittleEndian, tileHeight)                      // Tile height : 1 byte
-    	binary.Write(datFile, binary.LittleEndian, 2*imgHeight)                     // Number of pixels in the image : 2 bytes
-    	binary.Write(datFile, binary.LittleEndian, uint8(tilesByColumn+tilesByRow)) // Number of tiles in the image : 1 byte
 	}
 
 	for row := range tilesByRow {
